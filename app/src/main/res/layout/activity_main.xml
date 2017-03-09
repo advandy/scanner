@@ -8,8 +8,10 @@
 
     <Button
         android:id="@+id/takePicBtn"
-        android:layout_width="wrap_content"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="@android:color/holo_green_light"
         android:text="Scan"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -18,22 +20,59 @@
 
     <com.theartofdev.edmodo.cropper.CropImageView xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cropImageView"
-        android:layout_width="396dp"
-        android:layout_height="295dp"
-        android:layout_marginTop="45dp"
+        android:layout_width="fill_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="1"
-        custom:layout_constraintHorizontal_bias="0.5"
+        custom:cropInitialCropWindowPaddingRatio="0"
+        custom:cropMaxCropResultHeightPX="1000"
+        custom:cropMaxCropResultWidthPX="1000"
+        custom:cropMinCropResultHeightPX="100"
+        custom:cropMinCropResultWidthPX="100"
+        custom:layout_constraintBottom_toTopOf="@+id/resetBtn"
         custom:layout_constraintLeft_toLeftOf="parent"
         custom:layout_constraintRight_toRightOf="parent"
         custom:layout_constraintTop_toBottomOf="@+id/takePicBtn" />
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@android:color/holo_orange_light"
+        android:elevation="0dp"
         android:text="Ok"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cropImageView" />
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/resetBtn"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+
+        android:layout_marginBottom="76dp"
+        android:backgroundTint="@android:color/holo_red_light"
+        android:text="reset"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/send"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@android:color/holo_green_light"
+        android:text="Send for processing"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 </android.support.constraint.ConstraintLayout>
