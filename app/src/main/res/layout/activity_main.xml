@@ -6,73 +6,34 @@
     android:layout_height="match_parent"
     tools:context="com.example.d060753.scanner.MainActivity">
 
+
+    <GridView
+        android:id="@+id/gridView"
+        android:layout_width="353dp"
+        android:layout_height="495dp"
+        android:numColumns="2"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.0" />
+
     <Button
         android:id="@+id/takePicBtn"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="88dp"
+        android:layout_height="59dp"
         android:backgroundTint="@android:color/holo_green_light"
         android:text="Scan"
-        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_weight="2"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteY="0dp" />
-
-    <com.theartofdev.edmodo.cropper.CropImageView xmlns:custom="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/cropImageView"
-        android:layout_width="fill_parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_weight="1"
-        custom:cropInitialCropWindowPaddingRatio="0"
-        custom:cropMaxCropResultHeightPX="1000"
-        custom:cropMaxCropResultWidthPX="1000"
-        custom:cropMinCropResultHeightPX="100"
-        custom:cropMinCropResultWidthPX="100"
-        custom:layout_constraintBottom_toTopOf="@+id/resetBtn"
-        custom:layout_constraintLeft_toLeftOf="parent"
-        custom:layout_constraintRight_toRightOf="parent"
-        custom:layout_constraintTop_toBottomOf="@+id/takePicBtn" />
-
-    <Button
-        android:id="@+id/button3"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@android:color/holo_orange_light"
-        android:elevation="0dp"
-        android:text="Ok"
-        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:layout_marginRight="66dp"
+        android:layout_marginBottom="66dp"
+        android:layout_marginEnd="66dp" />
 
-    <Button
-        android:id="@+id/resetBtn"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-
-        android:layout_marginBottom="76dp"
-        android:backgroundTint="@android:color/holo_red_light"
-        android:text="reset"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <Button
-        android:id="@+id/send"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@android:color/holo_green_light"
-        android:text="Send for processing"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
 </android.support.constraint.ConstraintLayout>

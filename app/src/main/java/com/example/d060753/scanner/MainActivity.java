@@ -1,6 +1,6 @@
 package com.example.d060753.scanner;
 
-import android.content.ActivityNotFoundException;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,33 +10,37 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
+    static final String IMAGE_FOR_CROP = "image_for_crop";
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    final int PIC_CROP = 2;
-    private Uri picUri;
-    private Bitmap originPic;
+    static final int SEND_IMAGE = 2;
+
     CropImageView mImageView;
-    Button okBtn;
-    Button resetBtn;
-    Button sendBtn;
+    GridView gridView;
+    ArrayList<Bitmap> imageCollection = new ArrayList<Bitmap>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,33 +48,15 @@ public class MainActivity extends AppCompatActivity {
         Button picBtn = (Button) findViewById(R.id.takePicBtn);
         setBtnListenerOrDisable(picBtn, mTakePicOnClickListener, MediaStore.ACTION_IMAGE_CAPTURE);
         mImageView = (CropImageView) findViewById(R.id.cropImageView);
-        sendBtn = (Button) findViewById(R.id.send);
-        okBtn = (Button) findViewById(R.id.button3);
-        okBtn.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CropImageView mImageView = (CropImageView) findViewById(R.id.cropImageView);
-                Bitmap copped = mImageView.getCroppedImage();
-                mImageView.setImageBitmap(copped);
-                mImageView.resetCropRect();
-                mImageView.setShowCropOverlay(false);
-                resetBtn.setVisibility(View.VISIBLE);
-                sendBtn.setVisibility(View.VISIBLE);
-                okBtn.setVisibility(View.INVISIBLE);
-            }
-        });
 
-        resetBtn = (Button) findViewById(R.id.resetBtn);
-        resetBtn.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mImageView.setShowCropOverlay(true);
-                mImageView.setImageBitmap(originPic);
-                resetBtn.setVisibility(View.INVISIBLE);
-                okBtn.setVisibility(View.VISIBLE);
-                sendBtn.setVisibility(View.INVISIBLE);
-            }
-        });
+        gridView = (GridView)findViewById(R.id.gridView);
+
+    }
+
+    public void sendForCrop(String picPath) {
+        Intent intent = new Intent(MainActivity.this, DisplayMessageActivity.class);
+        intent.putExtra(IMAGE_FOR_CROP, picPath);
+        startActivityForResult(intent, SEND_IMAGE);
     }
 
     Button.OnClickListener mTakePicOnClickListener = new Button.OnClickListener(){
@@ -102,12 +88,68 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bitmap imageBitmap = decodeSampledBitmapFromFile(file.getAbsolutePath(), 1000, 700);
+            //Bitmap imageBitmap = decodeSampledBitmapFromFile(file.getAbsolutePath(), 1000, 700);
 //            Bundle extras = data.getExtras();
 //            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            mImageView.setImageBitmap(imageBitmap);
-            originPic = imageBitmap;
-            okBtn.setVisibility(View.VISIBLE);
+            sendForCrop(file.getAbsolutePath());
+        }
+
+        if (requestCode == SEND_IMAGE && resultCode == RESULT_OK) {
+            Bitmap image = decodeSampledBitmapFromFile(data.getStringExtra("IMAGE_PATH"), 1000, 700);
+            imageCollection.add(image);
+
+            ImageAdapter imageAdapter = new ImageAdapter(this, R.layout.document, imageCollection);
+            gridView.setAdapter(imageAdapter);
+
+        }
+    }
+
+    public class ImageAdapter extends BaseAdapter {
+        private ArrayList<Bitmap> imageCollection;
+        private Context context;
+        private int layoutResourceId;
+        public ImageAdapter(Context context,  int layoutResourceId,ArrayList<Bitmap> imageCollection) {
+            this.imageCollection = imageCollection;
+            this.context = context;
+            this.layoutResourceId = layoutResourceId;
+        }
+
+        @Override
+        public int getCount() {
+            return imageCollection.size();
+        }
+
+        @Override
+        public Bitmap getItem(int position) {
+            return imageCollection.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ImageView imageView;
+            TextView textView;
+            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            View row = inflater.inflate(layoutResourceId, parent, false);
+
+
+            imageView = (ImageView) row.findViewById(R.id.item_image);
+
+            imageView.setLayoutParams(new GridView.LayoutParams(200, 200));
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setPadding(8, 8, 8, 8);
+
+            textView = (TextView) row.findViewById(R.id.item_text);
+            textView.setText("Document " + position);
+
+            Bitmap imageBitmap = getItem(position);
+            imageView.setImageBitmap(imageBitmap);
+
+            return row;
         }
     }
 
